@@ -8,9 +8,21 @@ import {
   MDBListGroup,
   MDBListGroupItem
 } from 'mdb-react-ui-kit';
+import axios from "axios";
+
+const baseURL ="https://localhost:7209/api/coupon";
 
 export function TabContent1() {
   const [basicActive, setBasicActive] = useState('tab1');
+  const [post, setPost] = React.useState(null);
+
+  React.useEffect(() => {
+    axios.get('${baseURL}').then((respose) => {
+        setPost(respose.data);
+  });
+},[]);
+
+    post.map(coupon => console.log({coupon}));
 
   const handleBasicClick = (value ) => {
     if (value === basicActive) {
@@ -38,20 +50,15 @@ export function TabContent1() {
       <MDBTabsContent>
         <MDBTabsPane show={basicActive === 'tab1'}>
         <MDBListGroup style={{ minWidth: '22rem' }} light>
-              <MDBListGroupItem noBorders color='info' className='px-2 mb-2 rounded-2'>
-                A simple info list group item
+            {post.map(coupon => (
+                <MDBListGroupItem noBorders color='info' className='px-2 mb-2 rounded-2'>
+                {coupon.name}
               </MDBListGroupItem>
+            ))}
+              
           </MDBListGroup>
-          <MDBListGroup style={{ minWidth: '22rem' }} light>
-              <MDBListGroupItem noBorders color='info' className='px-2 mb-2 rounded-2'>
-                A simple info list group item
-              </MDBListGroupItem>
-          </MDBListGroup>
-          <MDBListGroup style={{ minWidth: '22rem' }} light>
-              <MDBListGroupItem noBorders color='info' className='px-2 mb-2 rounded-2'>
-                A simple info list group item
-              </MDBListGroupItem>
-          </MDBListGroup>
+          
+         
         </MDBTabsPane>
         <MDBTabsPane show={basicActive === 'tab2'}>
             Tab 2 content
